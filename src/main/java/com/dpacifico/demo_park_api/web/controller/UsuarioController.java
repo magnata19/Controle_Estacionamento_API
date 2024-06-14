@@ -3,9 +3,12 @@ package com.dpacifico.demo_park_api.web.controller;
 import com.dpacifico.demo_park_api.entity.Usuario;
 import com.dpacifico.demo_park_api.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/usuarios")
@@ -31,5 +34,11 @@ public class UsuarioController {
     public ResponseEntity<Usuario> updatePassword( @PathVariable Long id, @RequestBody Usuario usuario) {
         Usuario usuarioAlterado = usuarioService.editarSenha(id, usuario.getPassword());
         return ResponseEntity.ok(usuarioAlterado);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Usuario>> getAll() {
+        List<Usuario> listaDeUsuarios = usuarioService.getAll();
+        return ResponseEntity.ok(listaDeUsuarios);
     }
 }
