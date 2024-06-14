@@ -5,10 +5,7 @@ import com.dpacifico.demo_park_api.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/usuarios")
@@ -21,5 +18,12 @@ public class UsuarioController {
     public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
         Usuario usuarioSalvo = usuarioService.salvar(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> getById (@PathVariable Long id) {
+        Usuario usuarioId = usuarioService.buscarPorId(id);
+        return ResponseEntity.ok(usuarioId);
+//        return ResponseEntity.status(HttpStatus.OK).body(usuarioId);
     }
 }
