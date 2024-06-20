@@ -42,8 +42,8 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> getAll() {
+    public ResponseEntity<List<UsuarioResponseDto>> getAll() {
         List<Usuario> listaDeUsuarios = usuarioService.getAll();
-        return ResponseEntity.ok(listaDeUsuarios);
+        return ResponseEntity.ok(UsuarioMapper.toListDto(listaDeUsuarios));
     }
 }
