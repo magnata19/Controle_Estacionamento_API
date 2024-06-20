@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +29,16 @@ public class UsuarioService {
 
     //nesse exemplo utilizamos o metodo acima para encontrar um usuario por id
     @Transactional
-    public Usuario editarSenha(Long id, String password) {
+    public Usuario editarSenha(Long id, String senhaAtual, String novaSenha, String confirmaSenha) {
+        if (!novaSenha.equals(confirmaSenha)) {
+            throw new RuntimeException("As senhas não são iguais.");
+        }
         Usuario user = buscarPorId(id);
-        user.setPassword(password);
+
+        if (!user.getPassword().equals(senhaAtual)) {
+            throw new RuntimeException("Sua senha não confere.");
+        }
+        user.setPassword(novaSenha);
         return user;
     }
 
