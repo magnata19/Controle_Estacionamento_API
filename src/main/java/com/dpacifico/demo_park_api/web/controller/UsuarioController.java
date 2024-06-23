@@ -6,6 +6,7 @@ import com.dpacifico.demo_park_api.web.dto.UsuarioCreateDto;
 import com.dpacifico.demo_park_api.web.dto.UsuarioResponseDto;
 import com.dpacifico.demo_park_api.web.dto.UsuarioSenhaDto;
 import com.dpacifico.demo_park_api.web.dto.mapper.UsuarioMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
@@ -23,7 +24,7 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseDto> create(@RequestBody UsuarioCreateDto usuario) {
+    public ResponseEntity<UsuarioResponseDto> create(@Valid @RequestBody UsuarioCreateDto usuario) {
         Usuario usuarioSalvo = usuarioService.salvar(UsuarioMapper.toUsuario(usuario));
         return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDto(usuarioSalvo));
     }
@@ -36,7 +37,7 @@ public class UsuarioController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody UsuarioSenhaDto dto) {
+    public ResponseEntity<Void> updatePassword(@PathVariable Long id,@Valid @RequestBody UsuarioSenhaDto dto) {
         Usuario usuarioAlterado = usuarioService.editarSenha(id, dto.getSenhaAtual(), dto.getNovaSenha(), dto.getConfirmaSenha());
         return ResponseEntity.noContent().build();
     }
