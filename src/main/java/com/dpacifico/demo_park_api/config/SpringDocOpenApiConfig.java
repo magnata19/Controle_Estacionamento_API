@@ -14,6 +14,7 @@ public class SpringDocOpenApiConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(
+                        //cabecalho da documentacao
                         new Info()
                                 .title("REST API - Spring Park")
                                 .description("API para gestão de estacionamento.")
