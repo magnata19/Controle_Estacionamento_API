@@ -55,4 +55,15 @@ public class UsuarioService {
     public List<Usuario> getAll() {
         return usuarioRepository.findAll();
     }
+
+    @Transactional(readOnly = true) //usamos essa annotation como true quando queremos fazer consultas
+    public Usuario buscarPorUsername(String username) {
+         return usuarioRepository.findByUsername(username).orElseThrow(()
+         -> new RuntimeException(String.format("Usuário %s não encontrado", username))
+         );
+    }
+
+    public Usuario.Role buscarRolePorUsername(String username) {
+        return usuarioRepository.findRoleByUsername(username);
+    }
 }
