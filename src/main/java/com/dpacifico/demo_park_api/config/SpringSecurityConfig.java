@@ -27,8 +27,8 @@ public class SpringSecurityConfig {
                 .formLogin(form -> form.disable()) //desabilitar o form
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(HttpMethod.POST, "api/v1/usuarios").permitAll() //definir permissoes de acesso
-                                .requestMatchers(HttpMethod.POST, "api/v1/auth").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/v1/usuarios").permitAll() //definir permissoes de acesso
+                                .requestMatchers(HttpMethod.POST, "/api/v1/auth").permitAll()
                                 .anyRequest().authenticated() //pedir autenticacao pra qualquer request
                 ).sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)

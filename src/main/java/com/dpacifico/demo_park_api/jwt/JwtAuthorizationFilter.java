@@ -1,5 +1,6 @@
 package com.dpacifico.demo_park_api.jwt;
 
+import io.jsonwebtoken.Jwt;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private JwtUserDetailsService detailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         final String token = request.getHeader(JwtUtils.JWT_AUTHORIZATION);
 
         //if para fazer que requisições que nao precisem de token sejam retornadas
