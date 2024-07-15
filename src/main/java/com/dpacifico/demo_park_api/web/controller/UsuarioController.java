@@ -60,7 +60,7 @@ public class UsuarioController {
             }
     )
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')") //annotation utilizada para permitir requisicao apenas com perfil ADMIN
+    @PreAuthorize("hasRole('ADMIN') OR ( hasRole('CLIENTE') AND #id == authentication.principal.id)") //annotation utilizada para permitir requisicao apenas com perfil ADMIN
     public ResponseEntity<UsuarioResponseDto> getById (@PathVariable Long id) {
         Usuario usuarioId = usuarioService.buscarPorId(id);
         return ResponseEntity.ok(UsuarioMapper.toDto(usuarioId));
@@ -99,7 +99,7 @@ public class UsuarioController {
             }
     )
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN'))")
     public ResponseEntity<List<UsuarioResponseDto>> getAll() {
         List<Usuario> listaDeUsuarios = usuarioService.getAll();
         return ResponseEntity.ok(UsuarioMapper.toListDto(listaDeUsuarios));
