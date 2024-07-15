@@ -17,6 +17,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,6 +60,7 @@ public class UsuarioController {
             }
     )
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')") //annotation utilizada para permitir requisicao apenas com perfil ADMIN
     public ResponseEntity<UsuarioResponseDto> getById (@PathVariable Long id) {
         Usuario usuarioId = usuarioService.buscarPorId(id);
         return ResponseEntity.ok(UsuarioMapper.toDto(usuarioId));
@@ -97,6 +99,7 @@ public class UsuarioController {
             }
     )
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UsuarioResponseDto>> getAll() {
         List<Usuario> listaDeUsuarios = usuarioService.getAll();
         return ResponseEntity.ok(UsuarioMapper.toListDto(listaDeUsuarios));
