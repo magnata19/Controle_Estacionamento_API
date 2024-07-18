@@ -84,6 +84,7 @@ public class UsuarioController {
             }
     )
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CLIENTE') AND (#id == authentication.principal.id)")
     public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody UsuarioSenhaDto dto) {
         Usuario usuarioAlterado = usuarioService.editarSenha(id, dto.getSenhaAtual(), dto.getNovaSenha(), dto.getConfirmaSenha());
         return ResponseEntity.noContent().build();
@@ -99,7 +100,7 @@ public class UsuarioController {
             }
     )
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN'))")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UsuarioResponseDto>> getAll() {
         List<Usuario> listaDeUsuarios = usuarioService.getAll();
         return ResponseEntity.ok(UsuarioMapper.toListDto(listaDeUsuarios));
