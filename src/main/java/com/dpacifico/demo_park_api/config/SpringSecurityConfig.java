@@ -5,6 +5,7 @@ import com.dpacifico.demo_park_api.jwt.JwtAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -21,6 +22,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 public class SpringSecurityConfig {
 
+    private static final String[] DOCUMENTATION_API = {
+      "/docs/index.html","/docs-park.html","/docs-park/**","/v3/api-docs/**",
+            "/swagger-ui-custom.html","/swagger-ui.html", "/swagger-ui/**",
+            "/**.html","/webjars/**", "/configuration/**", "/swagger-resources/**"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -30,6 +37,7 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(HttpMethod.POST, "/api/v1/usuarios").permitAll() //definir permissoes de acesso
                                 .requestMatchers(HttpMethod.POST, "/api/v1/auth").permitAll()
+                                .requestMatchers(DOCUMENTATION_API).permitAll()
                                 .anyRequest().authenticated() //pedir autenticacao pra qualquer request
                 ).sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
