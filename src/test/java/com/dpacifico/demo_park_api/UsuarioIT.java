@@ -288,4 +288,6 @@ public class UsuarioIT {
         org.assertj.core.api.Assertions.assertThat(responseBody.size()).isEqualTo(3);
     }
 
+
+
 }
