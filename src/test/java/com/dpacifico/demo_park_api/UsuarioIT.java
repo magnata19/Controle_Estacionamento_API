@@ -235,6 +235,7 @@ public class UsuarioIT {
         ErrorMessage responseBody = testClient
                 .patch()
                 .uri("/api/v1/usuarios/100")
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient,"davids@david2.com","123321"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new UsuarioSenhaDto("123321", "123456", "000000"))
                 .exchange()
@@ -248,6 +249,7 @@ public class UsuarioIT {
         responseBody = testClient
                 .patch()
                 .uri("/api/v1/usuarios/100")
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient,"davids@david2.com","123321"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new UsuarioSenhaDto("000000","123456","123456"))
                 .exchange()
@@ -261,6 +263,7 @@ public class UsuarioIT {
         responseBody = testClient
                 .patch()
                 .uri("/api/v1/usuarios/100")
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient,"davids@david2.com","123321"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new UsuarioSenhaDto("123321","000000","123456"))
                 .exchange()
@@ -307,6 +310,7 @@ public class UsuarioIT {
         ErrorMessage responseBody = testClient
                 .patch()
                 .uri("/api/v1/usuarios/100")
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient,"davids@david2.com","123321"))
                 .bodyValue(new UsuarioSenhaDto("", "", ""))
                 .exchange()
                 .expectStatus().isEqualTo(422)
@@ -319,6 +323,7 @@ public class UsuarioIT {
         responseBody = testClient
                 .patch()
                 .uri("/api/v1/usuarios/100")
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient,"davids@david2.com","123321"))
                 .bodyValue(new UsuarioSenhaDto("12345","12345","12345"))
                 .exchange()
                 .expectStatus().isEqualTo(422)
@@ -331,6 +336,7 @@ public class UsuarioIT {
         responseBody = testClient
                 .patch()
                 .uri("/api/v1/usuarios/100")
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient,"davids@david2.com","123321"))
                 .bodyValue(new UsuarioSenhaDto("1234567","1234567","1234567"))
                 .exchange()
                 .expectStatus().isEqualTo(422)
@@ -347,6 +353,7 @@ public class UsuarioIT {
         List<UsuarioResponseDto> responseBody = testClient
                 .get()
                 .uri("/api/v1/usuarios")
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient, "davids@david2.com","123321"))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(UsuarioResponseDto.class)
@@ -357,6 +364,19 @@ public class UsuarioIT {
         org.assertj.core.api.Assertions.assertThat(responseBody.size()).isEqualTo(3);
     }
 
+    @Test
+    public void listarUsuarios_ComUsuarioSemPermissao_RetornarErrorMessageComStatus403() {
+            ErrorMessage responseBody = testClient.get()
+                .uri("/api/v1/usuarios")
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient, "pacific@david2.com", "123321"))
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class)
+                .returnResult().getResponseBody();
+
+        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(responseBody.getStatus()).isEqualTo(403);
+    }
 
 
 }
