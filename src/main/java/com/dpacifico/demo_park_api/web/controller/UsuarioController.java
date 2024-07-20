@@ -76,16 +76,12 @@ public class UsuarioController {
             summary = "Atualizar senha", description = "Requisição exige um bearer token. Acesso restrito a ADMIN | ClIENTE.",
             security = @SecurityRequirement(name = "security"),
             responses = {
-                    @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso!",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
+                    @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso!"),
 
                     @ApiResponse(responseCode = "400", description = "As senhas não conferem.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
 
                     @ApiResponse(responseCode = "403", description = "Usuário sem permissão para acessar este recurso.",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
-
-                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado para alterar a senha.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
 
                     @ApiResponse(responseCode = "422", description = "Campos inválidos ou mal formatados.",
