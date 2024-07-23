@@ -1,5 +1,6 @@
 package com.dpacifico.demo_park_api.web.exception;
 
+import com.dpacifico.demo_park_api.exception.CpfUniqueViolation;
 import com.dpacifico.demo_park_api.exception.EntityNotFoundException;
 import com.dpacifico.demo_park_api.exception.PasswordInvalidException;
 import com.dpacifico.demo_park_api.exception.UsernameUniqueViolation;
@@ -43,7 +44,7 @@ public class ApiExceptionHandler {
     }
 
     //exception retornada ao criar um usuario ja criado
-    @ExceptionHandler(UsernameUniqueViolation.class)
+    @ExceptionHandler({UsernameUniqueViolation.class, CpfUniqueViolation.class})
     public ResponseEntity<ErrorMessage> dataIntegrityViolationException(UsernameUniqueViolation ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
