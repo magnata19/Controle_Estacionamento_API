@@ -22,6 +22,5 @@ public class ClienteService {
         } catch (DataIntegrityViolationException ex) {
             throw new CpfUniqueViolation(String.format("CPF '%s' já está cadastrado.", cliente.getCpf()));
         }
-
     }
 }
