@@ -2,6 +2,7 @@ package com.dpacifico.demo_park_api.service;
 
 import com.dpacifico.demo_park_api.entity.Cliente;
 import com.dpacifico.demo_park_api.exception.CpfUniqueViolation;
+import com.dpacifico.demo_park_api.exception.EntityNotFoundException;
 import com.dpacifico.demo_park_api.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,5 +23,11 @@ public class ClienteService {
         } catch (DataIntegrityViolationException ex) {
             throw new CpfUniqueViolation(String.format("CPF '%s' já está cadastrado.", cliente.getCpf()));
         }
+    }
+
+    public Cliente buscarPorId(Long id) {
+        return clienteRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Usuário de id = %s não encontrado.", id))
+        );
     }
 }
