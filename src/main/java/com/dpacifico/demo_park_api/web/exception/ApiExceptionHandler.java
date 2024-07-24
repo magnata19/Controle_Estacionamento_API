@@ -44,13 +44,24 @@ public class ApiExceptionHandler {
     }
 
     //exception retornada ao criar um usuario ja criado
-    @ExceptionHandler({UsernameUniqueViolation.class, CpfUniqueViolation.class})
+    @ExceptionHandler(UsernameUniqueViolation.class)
     public ResponseEntity<ErrorMessage> dataIntegrityViolationException(UsernameUniqueViolation ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(
                    request,
                    HttpStatus.CONFLICT,
+                        ex.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(CpfUniqueViolation.class)
+    public ResponseEntity<ErrorMessage> cpfUniqueViolation(CpfUniqueViolation ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(
+                        request,
+                        HttpStatus.CONFLICT,
                         ex.getMessage()
                 ));
     }
