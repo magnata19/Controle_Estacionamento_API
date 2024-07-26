@@ -15,6 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,7 +45,7 @@ public class ClienteController {
                     content = @Content(mediaType = "application/json;charset=UTF-8", schema = @Schema(implementation = ErrorMessage.class)))
     }
     )
-    @PostMapping("/salvar")
+    @PostMapping
     @PreAuthorize("hasRole('CLIENTE')")
     public ResponseEntity<ClienteResponseDTO> create(@Valid @RequestBody ClienteCreateDTO dto,
                                                      @AuthenticationPrincipal JwtUserDetails userDetails) {
@@ -68,5 +70,11 @@ public class ClienteController {
     public ResponseEntity<ClienteResponseDTO> getById(@PathVariable Long id) {
         Cliente cliente = clienteService.buscarPorId(id);
         return ResponseEntity.status(200).body(ClienteMapper.toDto(cliente));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Cliente>> getAll(Pageable pageable) {
+        Page<Cliente> clientes = clienteService.buscarTodos(pageable);
+        return ResponseEntity.ok(clientes);
     }
 }

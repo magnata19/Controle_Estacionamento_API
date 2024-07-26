@@ -6,6 +6,8 @@ import com.dpacifico.demo_park_api.exception.EntityNotFoundException;
 import com.dpacifico.demo_park_api.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +27,15 @@ public class ClienteService {
         }
     }
 
+    @Transactional(readOnly = true)
     public Cliente buscarPorId(Long id) {
         return clienteRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Usuário de id = %s não encontrado.", id))
         );
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Cliente> buscarTodos(Pageable pageable){
+        return clienteRepository.findAll(pageable);
     }
 }
