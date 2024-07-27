@@ -113,6 +113,7 @@ public class ClienteController {
                             schema = @Schema(implementation = ErrorMessage.class)))
     })
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PageableDTO> getAll(@Parameter(hidden = true) @PageableDefault(size = 2, sort = {"nome"}) Pageable pageable) { //hidden utilizado para nao mostrar na documentacao nem na requisição o que colocamos como hidden na documentação tb
         Page<ClienteProjection> clientes = clienteService.buscarTodos(pageable);
         return ResponseEntity.ok(PageableMapper.toDto(clientes));
