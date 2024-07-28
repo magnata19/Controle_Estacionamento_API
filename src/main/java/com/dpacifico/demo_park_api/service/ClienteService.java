@@ -39,4 +39,8 @@ public class ClienteService {
     public Page<ClienteProjection> buscarTodos(Pageable pageable){
         return clienteRepository.findAllPageable(pageable);
     }
+
+    public Cliente buscarUsuarioPorId(Long id) {
+        return clienteRepository.findByUsuarioId(id);
+    }
 }
