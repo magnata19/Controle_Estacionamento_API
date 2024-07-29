@@ -1,9 +1,6 @@
 package com.dpacifico.demo_park_api.web.exception;
 
-import com.dpacifico.demo_park_api.exception.CpfUniqueViolation;
-import com.dpacifico.demo_park_api.exception.EntityNotFoundException;
-import com.dpacifico.demo_park_api.exception.PasswordInvalidException;
-import com.dpacifico.demo_park_api.exception.UsernameUniqueViolation;
+import com.dpacifico.demo_park_api.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -88,12 +85,13 @@ public class ApiExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(CodigoUniqueViolationException.class)
     public ResponseEntity<ErrorMessage> codigoUniqueViolationException(RuntimeException ex, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(
                         request,
-                        HttpStatus.BAD_REQUEST,
+                        HttpStatus.CONFLICT,
                         ex.getMessage()
                 ));
     }

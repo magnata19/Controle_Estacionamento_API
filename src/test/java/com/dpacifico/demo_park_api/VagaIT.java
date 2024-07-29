@@ -28,6 +28,21 @@ public class VagaIT {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectHeader().exists(HttpHeaders.LOCATION);
+    }
 
+    @Test
+    public void criarVaga_ComCodigoJaExistente_RetornarErrorMessageComStatus409() {
+        testClient
+                .post()
+                .uri("/api/v1/vagas")
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient, "davids@david2.com","123321"))
+                .bodyValue(new VagaCreateDTO("A-01","LIVRE"))
+                .exchange()
+                .expectStatus().isEqualTo(409)
+                .expectBody()
+                .jsonPath("status").isEqualTo(409)
+                .jsonPath("method").isEqualTo("POST")
+                .jsonPath("path").isEqualTo("/api/v1/vagas");
     }
 }

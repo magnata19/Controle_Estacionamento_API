@@ -24,6 +24,7 @@ public class VagaService {
         }
     }
 
+    @Transactional(readOnly = true)
     public Vaga buscarPorCodigo(String codigo) {
         return vagaRepository.findByCodigo(codigo).orElseThrow(
                 () -> new EntityNotFoundException(String.format("Vaga com código {%s} não encontrada", codigo))
