@@ -38,6 +38,9 @@ public class VagaController {
             @ApiResponse(responseCode = "201", description = "Recurso para criar uma nova vaga.",
             headers = @Header(name = HttpHeaders.LOCATION, description = "URL do recurso criado.")),
 
+            @ApiResponse(responseCode = "403", description = "Acesso restrito a Role = 'ADMIN'",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+
             @ApiResponse(responseCode = "409", description = "Vaga já cadastrada.",
             content = @Content(mediaType = "application/json;charset=UTF8",
                     schema = @Schema(implementation = ErrorMessage.class))),
@@ -64,6 +67,8 @@ public class VagaController {
     responses = {
             @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json;charset=UTF8",
                     schema = @Schema(implementation = VagaResponseDTO.class))),
+            @ApiResponse(responseCode = "403", description = "Acesso restrito a Role = 'ADMIN'",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
             @ApiResponse(responseCode = "404", content = @Content(mediaType = "application/json;charset=UTF8",
                     schema = @Schema(implementation = ErrorMessage.class))),
     })
