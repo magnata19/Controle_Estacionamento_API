@@ -40,7 +40,15 @@ public class ClienteService {
         return clienteRepository.findAllPageable(pageable);
     }
 
+    @Transactional
     public Cliente buscarUsuarioPorId(Long id) {
         return clienteRepository.findByUsuarioId(id);
+    }
+
+    @Transactional
+    public Cliente buscarPorCpf(String cpf) {
+        return clienteRepository.findByCpf(cpf).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Cliente com cpf de número %s não encontrado.", cpf))
+        );
     }
 }
