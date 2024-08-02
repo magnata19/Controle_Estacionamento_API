@@ -20,10 +20,8 @@ public class EstacionamentoService {
    public ClienteVaga checkIn(ClienteVaga clienteVaga) {
       Cliente cliente = clienteService.buscarPorCpf(clienteVaga.getCliente().getCpf());
       clienteVaga.setCliente(cliente);
-
       Vaga vaga = vagaService.buscarPorVagaLivre(); //achou vaga livre
       vaga.setStatus(Vaga.StatusVaga.OCUPADA); //vaga passa a ser ocupada
-
       clienteVaga.setVaga(vaga);
       clienteVaga.setDataEntrada(LocalDateTime.now());
       clienteVaga.setRecibo(EstacionamentoUtils.gerarRecibo());

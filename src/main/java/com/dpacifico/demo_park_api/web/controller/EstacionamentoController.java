@@ -25,7 +25,7 @@ public class EstacionamentoController {
     private final EstacionamentoService estacionamentoService;
 
     @PostMapping("/check-in")
-    @PreAuthorize("hasRole='ADMIN'")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EstacionamentoResponseDTO> checkIn(@RequestBody @Valid EstacionamenteCreateDTO dto) {
         ClienteVaga clienteVaga = ClienteVagaMapper.toVaga(dto);
         estacionamentoService.checkIn(clienteVaga);
