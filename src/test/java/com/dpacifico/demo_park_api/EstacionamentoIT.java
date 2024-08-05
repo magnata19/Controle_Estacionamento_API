@@ -43,4 +43,44 @@ public class EstacionamentoIT {
                 .jsonPath("vagaCodigo").exists();
 
     }
+
+    @Test
+    public void criarCheckin_ComRoleCliente_RetornarErrorMessageComStatus403() {
+        EstacionamenteCreateDTO createDTO = EstacionamenteCreateDTO.builder()
+                .placa("JKL-0392").marca("MAZDA").modelo("RX7")
+                .cor("PRETO").clienteCpf("19796804859")
+                .build();
+
+        testClient.post()
+                .uri("/api/v1/estacionamentos/check-in")
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient,"pacific@david2.com","123321"))
+                .bodyValue(createDTO)
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody()
+                .jsonPath("status").isEqualTo(403)
+                .jsonPath("method").isEqualTo("POST")
+                .jsonPath("path").isEqualTo("/api/v1/estacionamentos/check-in");
+    }
+
+    @Test
+    public void criarCheckin_ComDadosInvalidos_RetornarErrorMessageComStatus422() {
+        EstacionamenteCreateDTO createDTO = EstacionamenteCreateDTO.builder()
+                .placa("").marca("").modelo("")
+                .cor("").clienteCpf("")
+                .build();
+
+        testClient.post()
+                .uri("/api/v1/estacionamentos/check-in")
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient,"davids@david2.com","123321"))
+                .bodyValue(createDTO)
+                .exchange()
+                .expectStatus().isEqualTo(422)
+                .expectBody()
+                .jsonPath("status").isEqualTo(422)
+                .jsonPath("method").isEqualTo("POST")
+                .jsonPath("path").isEqualTo("/api/v1/estacionamentos/check-in");
+    }
 }
