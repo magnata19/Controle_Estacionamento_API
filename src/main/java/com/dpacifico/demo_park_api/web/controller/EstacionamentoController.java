@@ -8,6 +8,8 @@ import com.dpacifico.demo_park_api.web.dto.EstacionamentoResponseDTO;
 import com.dpacifico.demo_park_api.web.dto.mapper.ClienteVagaMapper;
 import com.dpacifico.demo_park_api.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,6 +17,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -63,10 +66,31 @@ public class EstacionamentoController {
         return ResponseEntity.created(location).body(responseDTO);
     }
 
+    @Operation(summary = "Localizar um veículo estacionado.", description = "Recurso para retornar um veículo estacionado " +
+    "pelo nº do recibo. Requisição exige o uso de um bearer token",
+    security = @SecurityRequirement(name = "security"),
+            parameters = {
+            @Parameter(in = ParameterIn.PATH, name = "recibo", description = "Número do recibo gerado pelo check-in")
+            },
+    responses = {
+            @ApiResponse(responseCode = "200", description = "Recurso localizado com sucesso!",
+            content = @Content(mediaType = "application/json;charset=UTF8", schema = @Schema(implementation = EstacionamentoResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Número de recibo não encontrado.",
+                    content = @Content(mediaType = "application/json;charset=UTF8", schema = @Schema(implementation = ErrorMessage.class)))
+    }
+    )
     @GetMapping("/check-in/{recibo}")
     @PreAuthorize("hasAnyRole('ADMIN','CLIENTE')")
     public ResponseEntity<EstacionamentoResponseDTO> getByRecibo(@PathVariable String recibo) {
         ClienteVaga clienteVaga = clienteVagaService.buscarPorRecibo(recibo);
+        EstacionamentoResponseDTO dto = ClienteVagaMapper.toDto(clienteVaga);
+        return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/checkout/{recibo}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<EstacionamentoResponseDTO> checkOut(@PathVariable String recibo) {
+        ClienteVaga clienteVaga = estacionamentoService.checkOut(recibo);
         EstacionamentoResponseDTO dto = ClienteVagaMapper.toDto(clienteVaga);
         return ResponseEntity.ok(dto);
     }
