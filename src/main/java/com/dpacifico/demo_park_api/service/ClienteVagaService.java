@@ -22,7 +22,7 @@ public class ClienteVagaService {
     public ClienteVaga buscarPorRecibo(String recibo) {
         return clienteVagaRepository.findByReciboAndDataSaidaIsNull(recibo).orElseThrow(
                 () -> new EntityNotFoundException(
-                        String.format("Recibo %s não encontrado no sistema ou check-out já realizado.")
+                        String.format("Recibo %s não encontrado no sistema ou check-out já realizado.", recibo)
                 )
         );
     }

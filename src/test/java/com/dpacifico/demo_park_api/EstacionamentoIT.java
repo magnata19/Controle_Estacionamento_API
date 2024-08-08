@@ -125,4 +125,57 @@ public class EstacionamentoIT {
                 .jsonPath("method").isEqualTo("POST")
                 .jsonPath("path").isEqualTo("/api/v1/estacionamentos/check-in");
     }
+
+    @Test
+    public void buscarCheckin_ComPerfilAdmin_RetornarDadosComStatus200() {
+        testClient
+                .get()
+                .uri("/api/v1/estacionamentos/check-in/{recibo}","20240803-212400")
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient,"davids@david2.com","123321"))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("placa").isEqualTo("JDM-3432")
+                .jsonPath("marca").isEqualTo("MAZDA")
+                .jsonPath("modelo").isEqualTo("MAZDA RX7")
+                .jsonPath("cor").isEqualTo("PRETO")
+                .jsonPath("clienteCpf").isEqualTo("19796804859")
+                .jsonPath("recibo").isEqualTo("20240803-212400")
+                .jsonPath("dataEntrada").isEqualTo("2024-03-15 10:23:43")
+                .jsonPath("vagaCodigo").isEqualTo("A-01");
+
+    }
+
+    @Test
+    public void buscarCheckin_ComPerfilCliente_RetornarDadosComStatus200() {
+        testClient
+                .get()
+                .uri("/api/v1/estacionamentos/check-in/{recibo}","20240803-212400")
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient,"pacific@david2.com","123321"))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("placa").isEqualTo("JDM-3432")
+                .jsonPath("marca").isEqualTo("MAZDA")
+                .jsonPath("modelo").isEqualTo("MAZDA RX7")
+                .jsonPath("cor").isEqualTo("PRETO")
+                .jsonPath("clienteCpf").isEqualTo("19796804859")
+                .jsonPath("recibo").isEqualTo("20240803-212400")
+                .jsonPath("dataEntrada").isEqualTo("2024-03-15 10:23:43")
+                .jsonPath("vagaCodigo").isEqualTo("A-01");
+    }
+
+    @Test
+    public void buscarCheckin_ComReciboInexistente_RetornarDadosComStatus404() {
+        testClient
+                .get()
+                .uri("/api/v1/estacionamentos/check-in/{recibo}", "20240803-999999")
+                .headers(JwtAuthentication.getHeaderAuthentication(testClient, "pacific@david2.com", "123321"))
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody()
+                .jsonPath("status").isEqualTo("404")
+                .jsonPath("method").isEqualTo("GET")
+                .jsonPath("path").isEqualTo("/api/v1/estacionamentos/check-in/20240803-999999");
+    }
 }

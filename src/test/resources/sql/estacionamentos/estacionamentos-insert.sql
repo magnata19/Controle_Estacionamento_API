@@ -13,4 +13,4 @@ insert into VAGAS (id, codigo, status) values (40, 'A-04', 'OCUPADA');
 insert into CLIENTES_TEM_VAGAS(numero_recibo, placa, marca, modelo, cor, data_entrada, id_cliente, id_vaga)
     values('20240803-212400', 'JDM-3432','MAZDA', 'MAZDA RX7', 'PRETO', '2024-03-15 10:23:43', 10, 10);
 insert into CLIENTES_TEM_VAGAS( numero_recibo, placa, marca, modelo, cor, data_entrada, id_cliente, id_vaga)
-    values('20240415-153254', 'TTP-3432','NISSAN', 'SKYLINE R34', 'PRETO', '2024-08-14 10:23:43', 20, 40);
+    values('20240415-153254', 'TTP-3432','NISSAN', 'SKYLINE R34', 'PRETO', '2024-08-14 10:23:43', 20, 20);
