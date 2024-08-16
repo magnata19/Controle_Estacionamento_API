@@ -234,4 +234,6 @@ public class EstacionamentoIT {
                 .jsonPath("method").isEqualTo("PUT")
                 .jsonPath("path").isEqualTo("/api/v1/estacionamentos/check-out/20240803-212400");
     }
+
+
 }
